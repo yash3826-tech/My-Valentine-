@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Be My Valentine? 💘</title>
+  <style>
+    :root{
+      --bg: #fff5f7;
+      --card: #ffffff;
+      --text: #3a3a3a;
+      --primary: #ff4d6d;
+      --primary-dark:#e84362;
+      --accent: #ffd6de;
+      --shadow: 0 10px 30px rgba(255, 77, 109, 0.15);
+      --radius: 22px;
+    }
+    *{box-sizing: border-box}
+    body{
+      margin:0;
+      min-height:100svh;
+      background: radial-gradient(circle at 20% 10%, #ffe3ea 0%, #fff5f7 40%, #fff 100%);
+      color:var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      display:grid;
+      place-items:center;
+      overflow:hidden;
+    }
+
+    /* Floating hearts background */
+    .hearts{
+      position:fixed; inset:0; pointer-events:none; overflow:hidden;
+    }
+    .heart{
+      position:absolute; color:#ff8aa0; opacity:.25; font-size:clamp(16px, 3vw, 28px);
+      animation: floatUp linear forwards;
+    }
+    @keyframes floatUp{
+      from{ transform: translateY(110vh) translateX(var(--start-x)) rotate(0deg); opacity:.05; }
+      to{ transform: translateY(-20vh) translateX(var(--end-x)) rotate(360deg); opacity:.35; }
+    }
+
+    /* Card */
+    .card{
+      width:min(560px, 92vw);
+      background:var(--card);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:28px 24px 24px;
+      text-align:center;
+      position:relative;
+      z-index:2;
+    }
+    .title{
+      font-size:clamp(22px, 3.6vw, 30px);
+      font-weight:800;
+      color:#e03152;
+      margin:0 0 8px;
+      letter-spacing:.2px;
+    }
+    .subtitle{
+      font-size:clamp(14px, 2.5vw, 16px);
+      opacity:.8; margin:0 0 22px;
+    }
+
+    /* Cute avatar / image */
+    .hero{
+      display:flex; align-items:center; justify-content:center;
+      margin:6px 0 18px;
+    }
+    .bubble{
+      width:120px; height:120px; border-radius:50%;
+      background:linear-gradient(145deg, #fff, #ffe9ee);
+      border:6px solid var(--accent);
+      display:grid; place-items:center;
+      box-shadow:0 8px 20px rgba(0,0,0,.06);
+    }
+    .bubble span{ font-size:46px; }
+
+    /* Buttons row */
+    .btns{
+      display:flex; gap:14px; justify-content:center; align-items:center;
+      flex-wrap:wrap; margin-top:14px;
+    }
+    button{
+      border:none; cursor:pointer; font-weight:700;
+      padding:12px 20px; border-radius:999px;
+      transition:transform .15s ease, box-shadow .2s ease, background .2s ease;
+      box-shadow:0 6px 16px rgba(0,0,0,.06);
+      font-size:16px;
+    }
+    #yesBtn{
+      background:var(--primary); color:white;
+    }
+    #yesBtn:hover{ transform:translateY(-1px); background:var(--primary-dark); }
+    #noBtn{
+      background:#fff; color:#d12a4a; border:2px solid #ffc2cd;
+      position:relative;
+    }
+
+    /* Message modal */
+    .message{
+      position:fixed; inset:0; display:grid; place-items:center;
+      background:rgba(0,0,0,.28); opacity:0; pointer-events:none;
+      transition:opacity .25s ease; z-index:30;
+    }
+    .message.show{ opacity:1; pointer-events:auto; }
+    .message-card{
+      width:min(520px, 90vw);
+      background:#fff; border-radius:20px; padding:22px;
+      text-align:center; box-shadow:var(--shadow);
+      animation:pop .2s ease;
+    }
+    @keyframes pop{ from{ transform:scale(.95); opacity:.6 } to{ transform:scale(1); opacity:1 } }
+    .message h2{ margin:0 0 10px; color:#e03152 }
+    .message p{ margin:0 0 16px; line-height:1.5 }
+    .close{
+      background:#fff; border:2px solid #ffe0e6; color:#e03152;
+    }
+
+    /* Make the “No” button run away */
+    .stage{
+      position:relative;
+      width:100%;
+      height:160px; /* space for the runaway fun */
+      margin-top:8px;
+    }
+    .floating-no{
+      position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+    }
+
+    /* Small note */
+    .note{ margin-top:8px; font-size:12px; opacity:.7 }
+
+    /* Mobile tweaks */
+    @media (max-width:420px){
+      .stage{ height:180px; }
+      #noBtn{ padding:11px 16px; }
+      #yesBtn{ padding:12px 18px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Floating hearts background -->
+  <div class="hearts" id="hearts"></div>
+
+  <main class="card" role="dialog" aria-labelledby="title" aria-describedby="desc">
+    <h1 class="title" id="title">Will you be my Valentine? 💖</h1>
+    <p class="subtitle" id="desc">I made you a tiny website because you’re my favorite notification.</p>
+
+    <div class="hero">
+      <div class="bubble" aria-hidden="true"><span>🫶</span></div>
+    </div>
+
+    <div class="btns">
+      <button id="yesBtn" aria-label="Yes">Yes 💘</button>
+    </div>
+
+    <div class="stage" aria-hidden="false">
+      <!-- The “No” button lives in its own absolutely positioned wrapper -->
+      <div class="floating-no">
+        <button id="noBtn" aria-label="No">No 🙃</button>
+      </div>
+    </div>
+
+    <div class="note">P.S. Try tapping “No”… if you can 😇</div>
+  </main>
+
+  <!-- Sweet message modal -->
+  <div class="message" id="msg">
+    <div class="message-card" role="alertdialog" aria-modal="true">
+      <h2>Yay! 🥰</h2>
+      <p id="customMessage">
+        I’m so happy you said yes!  
+        Dinner’s on me, and I can’t wait to see you smile. 💐
+      </p>
+      <button class="close" id="closeMsg">Close</button>
+    </div>
+  </div>
+
+  <script>
+    // ====== CUSTOMIZE THESE LINES ======
+    const yourQuestion = "Will you be my Valentine? 💖";
+    const yourSubtitle = "I made you a tiny website because you’re my favorite notification.";
+    const yourYesMessage = "I’m so happy you said yes! Dinner’s on me, and I can’t wait to see you smile. 💐";
+    // ===================================
+
+    document.querySelector(".title").textContent = yourQuestion;
+    document.querySelector(".subtitle").textContent = yourSubtitle;
+    document.getElementById("customMessage").textContent = yourYesMessage;
+
+    // Hearts background generator
+    const hearts = document.getElementById("hearts");
+    const makeHeart = () => {
+      const h = document.createElement("div");
+      h.className = "heart";
+      h.textContent = Math.random() > .5 ? "❤" : "💗";
+      h.style.left = `${Math.random()*100}vw`;
+      h.style.setProperty('--start-x', `${(Math.random()*40-20)}vw`);
+      h.style.setProperty('--end-x', `${(Math.random()*40-20)}vw`);
+      const dur = 6 + Math.random()*6;
+      h.style.animationDuration = `${dur}s`;
+      hearts.appendChild(h);
+      setTimeout(()=> h.remove(), dur*1000);
+    };
+    for(let i=0;i<18;i++) setTimeout(makeHeart, i*350);
+    setInterval(makeHeart, 1200);
+
+    // Runaway “No” button
+    const noBtn = document.getElementById("noBtn");
+    const floatWrap = document.querySelector(".floating-no");
+    const stage = document.querySelector(".stage");
+
+    // Helper to clamp values so button stays visible
+    function clamp(val, min, max){ return Math.min(Math.max(val, min), max); }
+
+    // Move the wrapper instead of the button
+    function moveNoAway(mouseX, mouseY){
+      const rectStage = stage.getBoundingClientRect();
+      const rectWrap = floatWrap.getBoundingClientRect();
+      const cx = rectWrap.left + rectWrap.width/2;
+      const cy = rectWrap.top + rectWrap.height/2;
+
+      // Vector from mouse to button center
+      const dx = cx - mouseX;
+      const dy = cy - mouseY;
+      const dist = Math.hypot(dx, dy) || 1;
+
+      // Push away proportional to proximity
+      const push = clamp(140 - dist, 0, 110); // stronger when close
+      const nx = dx / dist, ny = dy / dist;
+
+      // New target center
+      let targetX = cx + nx * push;
+      let targetY = cy + ny * push;
+
+      // Constrain inside stage
+      const pad = 8;
+      const minX = rectStage.left + pad + rectWrap.width/2;
+      const maxX = rectStage.right - pad - rectWrap.width/2;
+      const minY = rectStage.top + pad + rectWrap.height/2;
+      const maxY = rectStage.bottom - pad - rectWrap.height/2;
+
+      targetX = clamp(targetX, minX, maxX);
+      targetY = clamp(targetY, minY, maxY);
+
+      const left = targetX - rectStage.left - rectWrap.width/2;
+      const top  = targetY - rectStage.top - rectWrap.height/2;
+
+      floatWrap.style.left = `${left}px`;
+      floatWrap.style.top  = `${top}px`;
+    }
+
+    // Desktop: chase-away on mousemove inside stage
+    stage.addEventListener("mousemove", (e)=> moveNoAway(e.clientX, e.clientY));
+
+    // Mobile: make “No” teleport on touchstart
+    noBtn.addEventListener("touchstart", ()=>{
+      const rectStage = stage.getBoundingClientRect();
+      const x = Math.random() * (rectStage.width  - floatWrap.offsetWidth);
+      const y = Math.random() * (rectStage.height - floatWrap.offsetHeight);
+      floatWrap.style.left = `${x}px`;
+      floatWrap.style.top  = `${y}px`;
+    }, {passive:true});
+
+    // Prevent actual click on “No”
+    noBtn.addEventListener("click", (e)=>{
+      e.preventDefault();
+      // a cheeky hop when “clicked”
+      floatWrap.animate([{ transform:'translate(-50%,-50%) scale(1.03)' }, { transform:'translate(-50%,-50%) scale(1)' }], {duration:120});
+    });
+
+    // Yes flow -> show message
+    const yesBtn = document.getElementById("yesBtn");
+    const modal = document.getElementById("msg");
+    const closeMsg = document.getElementById("closeMsg");
+
+    yesBtn.addEventListener("click", ()=> {
+      modal.classList.add("show");
+    });
+    closeMsg.addEventListener("click", ()=> modal.classList.remove("show"));
+    modal.addEventListener("click", (e)=> {
+      if(e.target === modal) modal.classList.remove("show");
+    });
+  </script>
+</body>
+</html>
