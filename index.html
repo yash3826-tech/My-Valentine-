@@ -4,8 +4,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Cami, will you be My Valentine? 💘</title>
-  <meta name="description" content="A little Valentine surprise for Cami 💖" />
+  <title>Alice, will you be My Valentine? 💘</title>
+  <meta name="description" content="A little Valentine surprise for Alice 💖" />
   <style>
     :root{
       --bg: #fff5f7;
@@ -147,8 +147,8 @@
   <div class="hearts" id="hearts"></div>
 
   <main class="card" role="dialog" aria-labelledby="title" aria-describedby="desc">
-    <h1 class="title" id="title">Hello Cami Darling, will you be my Valentine? 💖</h1>
-    <p class="subtitle" id="desc">I love you so much — you’re my favorite person, so I made you this, my Camibear.</p>
+    <h1 class="title" id="title">Hello Alice Darling, will you be my Valentine? 💖</h1>
+    <p class="subtitle" id="desc">I love you so much — you’re my favorite person, so I made you this.</p>
 
     <div class="hero">
       <div class="bubble" aria-hidden="true"><span>🫶</span></div>
@@ -173,9 +173,8 @@
     <div class="message-card" role="alertdialog" aria-modal="true">
       <h2>Yay! 🥰</h2>
       <p id="customMessage">
-        I love you more than anything. Thank you for being my Valentine —
-        I can’t wait to make it a night to remember. You are beautiful inside and out,
-        and I’ll cherish you always. Love, your Yashy xx
+        I love you more than anything. Thank you for being my Valentine. You are beautiful inside and out,
+        and I’ll cherish you always. Love, Manas xx
       </p>
       <button class="close" id="closeMsg">Close</button>
     </div>
@@ -183,9 +182,9 @@
 
   <script>
     // ====== YOUR CUSTOM TEXT (these lines drive what shows on the page) ======
-    const yourQuestion = "Hello Cami Darling, will you be my Valentine? 💖";
-    const yourSubtitle = "I love you so much — you’re my favorite person, so I made you this, my Camibear.";
-    const yourYesMessage = "I love you more than anything. Thank you for being my Valentine — I can’t wait to make it a night to remember. You are beautiful inside and out, and I’ll cherish you always. Love, your Yashy xx";
+    const yourQuestion = "Hello Alice Darling, will you be my Valentine? 💖";
+    const yourSubtitle = "I love you so much — you’re my favorite person, so I made you this.";
+    const yourYesMessage = "I love you more than anything. Thank you for being my Valentine. You are beautiful inside and out, and I’ll cherish you always. Love, Manas xx";
     // ========================================================================
 
     // Apply your custom text to the page
@@ -281,11 +280,11 @@
     const modal = document.getElementById("msg");
     const closeMsg = document.getElementById("closeMsg");
 
-    yesBtn.addEventListener("click", ()=> {
+    yesBtn.addEventListener("click", () => {
       modal.classList.add("show");
     });
-    closeMsg.addEventListener("click", ()=> modal.classList.remove("show"));
-    modal.addEventListener("click", (e)=> {
+    closeMsg.addEventListener("click", () => modal.classList.remove("show"));
+    modal.addEventListener("click", (e) => {
       if(e.target === modal) modal.classList.remove("show");
     });
   </script>
